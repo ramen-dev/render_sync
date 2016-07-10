@@ -7,10 +7,12 @@ module RenderSync
       RenderSync.load_config(path, Rails.env) if path.exist?
     end
 
-    initializer "sync.activerecord" do
-      ActiveRecord::Base.send :extend, Model::ClassMethods
+    if defined?(ActiveRecord)
+      initializer "sync.activerecord" do
+        ActiveRecord::Base.send :extend, Model::ClassMethods
+      end
     end
-
+  
     # Adds the ViewHelpers into ActionView::Base
     initializer "sync.view_helpers" do
       ActionView::Base.send :include, ViewHelpers
